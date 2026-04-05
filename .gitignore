@@ -10,6 +10,11 @@ Desktop.ini
 *.swo
 *~
 
+# Node / build
+node_modules/
+dist/
+*.tsbuildinfo
+
 # Logs and temp
 *.log
 tmp/
