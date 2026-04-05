@@ -63,11 +63,26 @@ This repo is wired for **[Vercel](https://vercel.com/)** using the [Express on V
 - **`npm run vercel-build`** builds the Vite client, then copies **`client/dist` → `public/`**, which Vercel serves over the **CDN** (Express `static` is not used on Vercel).
 - **`vercel.json`** adds SPA rewrites for `/app` routes and security headers (**HSTS**, **nosniff**, **Referrer-Policy**, **Permissions-Policy**). Traffic uses **TLS in transit** on `*.vercel.app` and on your custom domain once you attach it.
 
-**Steps**
+**Option A — Dashboard (recommended)**
 
-1. Push this project to GitHub and **Import** it in the Vercel dashboard (root directory = repository root).
-2. Vercel will run `installCommand` → `buildCommand` from `vercel.json` (`install:all`, then `vercel-build`).
-3. When you buy a domain, add it under **Project → Settings → Domains** and turn on the recommended DNS. Set **`CLIENT_URL`** in **Settings → Environment Variables** to your canonical HTTPS origin (e.g. `https://www.yourdomain.org`) for consistent CORS if you ever call the API from another origin.
+1. Open [vercel.com/new](https://vercel.com/new) and sign in with GitHub.
+2. **Import** `CoderAtFundSteward/athena-financial` (or your fork).
+3. Leave **Root Directory** as **`./`** (repository root, where `vercel.json` lives).
+4. **Build & Output:** Vercel reads `vercel.json` — **Install Command** `npm run install:all`, **Build Command** `npm run vercel-build`. Do not point the framework preset only at `client/`; the Express entry is **`src/index.ts`** at the repo root.
+5. Click **Deploy**. When it finishes, copy your production URL (e.g. `https://athena-financial-xxx.vercel.app`).
+6. In **Project → Settings → Environment Variables**, add **`CLIENT_URL`** = that exact `https://…` URL for **Production** (and **Preview** if you use preview deployments), then **Redeploy** so CORS matches your live origin.
+7. Optional: **Settings → Domains** — add your custom domain when DNS is ready.
+
+**Option B — CLI (after login)**
+
+```bash
+cd apps/athena-financial   # or your standalone clone
+npx vercel@latest login      # complete the browser / device flow
+npx vercel@latest link     # link to a new or existing Vercel project
+npx vercel@latest --prod   # production deploy
+```
+
+The local `.vercel/` folder is gitignored; GitHub integration can still trigger deploys on push.
 
 **Encryption / security (practical checklist)**
 
@@ -84,6 +99,6 @@ This repo is wired for **[Vercel](https://vercel.com/)** using the [Express on V
 ## GitHub
 
 ```bash
-git remote add origin https://github.com/YOUR_USER/athena-financial.git
+git remote add origin https://github.com/CoderAtFundSteward/athena-financial.git
 git push -u origin main
 ```

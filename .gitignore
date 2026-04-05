@@ -28,3 +28,6 @@ temp/
 .env
 .env.*
 !.env.example
+
+# Vercel CLI (local link / project metadata — do not commit)
+.vercel/

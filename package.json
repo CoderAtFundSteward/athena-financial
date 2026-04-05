@@ -2,6 +2,9 @@
   "name": "athena-financial",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "description": "Athena Financial — React + Express + TypeScript",
   "scripts": {
     "dev:server": "cd server && npm run dev",
