@@ -197,3 +197,444 @@ body {
   font-size: 0.82rem;
   word-break: break-all;
 }
+
+.topbar-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.topbar-site-link {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #78716c;
+  text-decoration: none;
+}
+
+.topbar-site-link:hover {
+  color: #44403c;
+}
+
+.page-header--wide {
+  max-width: 48rem;
+}
+
+.page-inline-cta {
+  margin: 0.75rem 0 0;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8125rem;
+}
+
+.btn-lg {
+  padding: 0.65rem 1.35rem;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #15803d 0%, #166534 100%);
+  color: #fff;
+  border-color: rgba(22, 101, 52, 0.35);
+  box-shadow: 0 1px 2px rgba(28, 25, 23, 0.12);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-outline {
+  background: #fff;
+  color: #1c1917;
+  border-color: rgba(28, 25, 23, 0.15);
+}
+
+.btn-outline:hover {
+  border-color: rgba(28, 25, 23, 0.28);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #e7e5e4;
+  border-color: transparent;
+}
+
+.btn-ghost:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Marketing */
+.marketing {
+  min-height: 100vh;
+  background: #0c0a09;
+  color: #e7e5e4;
+}
+
+.marketing a {
+  color: inherit;
+}
+
+.marketing-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(12, 10, 9, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.marketing-nav-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.marketing-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: #fafaf9;
+}
+
+.marketing-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.marketing-hero {
+  padding: 3.5rem 1.25rem 3rem;
+  background: radial-gradient(120% 80% at 50% 0%, rgba(22, 163, 74, 0.2) 0%, transparent 55%),
+    linear-gradient(180deg, #0c0a09 0%, #1c1917 100%);
+}
+
+.marketing-hero-inner {
+  max-width: 44rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.marketing-eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #86efac;
+}
+
+.marketing-headline {
+  margin: 0 0 1rem;
+  font-size: clamp(1.85rem, 4vw, 2.65rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  color: #fafaf9;
+}
+
+.marketing-subhead {
+  margin: 0 0 1.75rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #d6d3d1;
+}
+
+.marketing-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.marketing-stats {
+  padding: 2.5rem 1.25rem;
+  background: #14532d;
+  border-block: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.marketing-stats-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .marketing-stats-inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.stat-card {
+  text-align: center;
+  padding: 0.5rem 0.25rem;
+}
+
+.stat-value {
+  margin: 0 0 0.35rem;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.stat-label {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.marketing-section {
+  padding: 3rem 1.25rem;
+  background: #fafaf9;
+  color: #1c1917;
+}
+
+.marketing-section--alt {
+  background: #f4f2ee;
+}
+
+.marketing-section-inner {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.marketing-section-title {
+  margin: 0 0 0.65rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0c0a09;
+}
+
+.marketing-section-lede {
+  margin: 0 0 1.25rem;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #57534e;
+}
+
+.marketing-list {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #44403c;
+}
+
+.marketing-list strong {
+  color: #0c0a09;
+}
+
+.marketing-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.marketing-steps > li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.marketing-step-num {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: #166534;
+  color: #fff;
+}
+
+.marketing-step-title {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0c0a09;
+}
+
+.marketing-cta-band {
+  padding: 3rem 1.25rem;
+  background: linear-gradient(180deg, #0c0a09 0%, #14532d 100%);
+  text-align: center;
+}
+
+.marketing-cta-inner {
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.marketing-cta-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #fafaf9;
+}
+
+.marketing-cta-copy {
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #d6d3d1;
+}
+
+.marketing-footer {
+  padding: 2rem 1.25rem 2.5rem;
+  background: #0c0a09;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.marketing-footer-inner {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.marketing-footer-brand {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  color: #fafaf9;
+}
+
+.marketing-footer-note {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #a8a29e;
+}
+
+.marketing-footer-note a {
+  color: #86efac;
+  text-decoration: underline;
+}
+
+/* Connectors */
+.connectors-stack {
+  display: grid;
+  gap: 2rem;
+}
+
+.connector-group-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0c0a09;
+}
+
+.connector-group-body {
+  margin: 0 0 1.25rem;
+  max-width: 52rem;
+}
+
+.connector-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .connector-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.connector-card {
+  background: #fff;
+  border: 1px solid rgba(28, 25, 23, 0.08);
+  border-radius: 12px;
+  padding: 1.15rem 1.1rem;
+  box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04);
+}
+
+.connector-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.connector-name {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0c0a09;
+}
+
+.connector-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid rgba(28, 25, 23, 0.12);
+  color: #57534e;
+}
+
+.connector-badge--plaid {
+  background: rgba(22, 163, 74, 0.12);
+  border-color: rgba(22, 163, 74, 0.35);
+  color: #166534;
+}
+
+.connector-badge--oauth {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.25);
+  color: #1d4ed8;
+}
+
+.connector-badge--file {
+  background: rgba(120, 113, 108, 0.12);
+  border-color: rgba(120, 113, 108, 0.22);
+  color: #44403c;
+}
+
+.connector-desc {
+  margin: 0 0 0.65rem;
+}
+
+.connector-footnote {
+  margin: 0;
+  font-size: 0.75rem;
+}

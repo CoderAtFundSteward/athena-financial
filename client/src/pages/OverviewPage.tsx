@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type HealthResponse = {
   status: string;
@@ -33,15 +34,22 @@ export function OverviewPage() {
       <header className="page-header">
         <h1 className="page-title">Overview</h1>
         <p className="page-lede">
-          Snapshot of workspace status. Use the top navigation to open each area of the app.
+          Holistic cash flow for your nonprofit starts with connected sources. Link banks through Plaid,
+          then add accounting, giving, and file-based feeds so every inflow and outflow rolls into one
+          timeline.
+        </p>
+        <p className="page-inline-cta">
+          <Link to="/app/connectors" className="btn btn-primary btn-sm">
+            Manage connectors
+          </Link>
         </p>
       </header>
       <section className="grid-2">
         <div className="card">
-          <h2 className="card-title">Today</h2>
+          <h2 className="card-title">Cash visibility</h2>
           <p className="muted">
-            This section is ready for balances, alerts, and upcoming items once you connect data
-            sources.
+            This panel will summarize liquidity, upcoming obligations, and giving-driven deposits once
+            transactions are flowing from your connectors.
           </p>
         </div>
         <div className="card">

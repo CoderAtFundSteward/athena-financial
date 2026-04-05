@@ -4,8 +4,8 @@ export function BalancesPage() {
       <header className="page-header">
         <h1 className="page-title">Balances</h1>
         <p className="page-lede">
-          Consolidated positions and account summaries will live here — separate from other tools you
-          may use for bookkeeping.
+          After Plaid and other connectors sync, roll up balances by bank, fund, and program so
+          finance committees see one consolidated picture.
         </p>
       </header>
       <div className="card card--stretch">

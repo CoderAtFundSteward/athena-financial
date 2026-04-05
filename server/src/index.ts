@@ -25,6 +25,16 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+/** Placeholder metrics for the marketing page — replace with real analytics or CMS-driven values. */
+app.get('/api/public/stats', (_req, res) => {
+  res.json({
+    organizationsHelped: 2400,
+    transactionsSyncedDisplay: '12M+',
+    partnerConnectors: 8,
+    tagline: 'Nonprofits use Athena Financial to see cash flow across every account they rely on.',
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`API running on http://localhost:${PORT}`);
 });

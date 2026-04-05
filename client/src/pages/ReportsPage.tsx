@@ -4,8 +4,8 @@ export function ReportsPage() {
       <header className="page-header">
         <h1 className="page-title">Reports</h1>
         <p className="page-lede">
-          Packaged statements and custom report builder. This route is independent of day-to-day
-          transaction screens.
+          Board-ready summaries and auditor-friendly exports—built from the same unified transaction
+          ledger as the cash flow workspace.
         </p>
       </header>
       <div className="card card--stretch">

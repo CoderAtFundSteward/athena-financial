@@ -4,8 +4,8 @@ export function CashFlowPage() {
       <header className="page-header">
         <h1 className="page-title">Cash flow</h1>
         <p className="page-lede">
-          Planned inflows, outflows, and runway — structured as its own module with charts and filters
-          when you add them.
+          Nonprofit cash flow blends donations, grants, payroll, and program spend. This view will merge
+          normalized transactions from every connector into timelines, categories, and runway.
         </p>
       </header>
       <div className="card card--stretch">
