@@ -21,16 +21,21 @@ cp .env.example .env
 
 ## Development
 
+Run dev **from this folder** (`athena-financial`), not from the QuickBooks repo—both apps use Vite, and the QuickBooks project is still wired to **5173 / 3001**. Athena Financial defaults to **5280 / 3002** so you can run either project without a port fight.
+
 ```bash
+cd c:\aMyCursor\Athena-Financial
 npm run dev
 ```
 
+After `cp .env.example .env`, your `.env` should use `PORT=3002` and `CLIENT_URL=http://localhost:5280` (or delete `.env` to rely on the same defaults in code).
+
 | URL | Purpose |
 |-----|---------|
-| [http://localhost:5173/](http://localhost:5173/) | Marketing site — value prop, impact stats, how it works |
-| [http://localhost:5173/app/overview](http://localhost:5173/app/overview) | Signed-in style dashboard (auth not wired yet) |
-| [http://localhost:5173/app/connectors](http://localhost:5173/app/connectors) | Connector catalog — Plaid for **banks/cards**; OAuth/file flows for other sources |
-| [http://localhost:3001/api/public/stats](http://localhost:3001/api/public/stats) | Placeholder JSON for “organizations helped” metrics on the homepage |
+| [http://localhost:5280/](http://localhost:5280/) | Marketing site — value prop, impact stats, how it works |
+| [http://localhost:5280/app/overview](http://localhost:5280/app/overview) | App shell + dashboard (auth not wired yet) |
+| [http://localhost:5280/app/connectors](http://localhost:5280/app/connectors) | Connector catalog — Plaid for **banks/cards**; OAuth/file flows for other sources |
+| [http://localhost:3002/api/public/stats](http://localhost:3002/api/public/stats) | Placeholder JSON for “organizations helped” metrics on the homepage |
 
 ### Plaid vs other connectors
 
