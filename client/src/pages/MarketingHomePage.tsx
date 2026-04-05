@@ -172,13 +172,6 @@ export function MarketingHomePage() {
       <footer className="marketing-footer">
         <div className="marketing-footer-inner">
           <p className="marketing-footer-brand">Athena Financial</p>
-          <p className="muted marketing-footer-note">
-            Product positioning is inspired by consumer finance clarity tools such as{' '}
-            <a href="https://www.rocketmoney.com/" target="_blank" rel="noreferrer">
-              Rocket Money
-            </a>
-            ; Athena Financial is an independent product for nonprofit organizations.
-          </p>
         </div>
       </footer>
     </div>

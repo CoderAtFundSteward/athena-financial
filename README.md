@@ -1,6 +1,6 @@
 # Athena Financial
 
-Nonprofit-focused cash flow product: organizations create a **profile**, choose **connectors** (banks, accounting tools, giving platforms, spreadsheets, and files), and view **holistic cash flow** from normalized transactions. The public marketing experience is modeled after the clarity of tools like [Rocket Money](https://www.rocketmoney.com/) while serving mission-driven finance teams.
+Nonprofit-focused cash flow product: organizations create a **profile**, choose **connectors** (banks, accounting tools, giving platforms, spreadsheets, and files), and view **holistic cash flow** from normalized transactions.
 
 ## Stack
 

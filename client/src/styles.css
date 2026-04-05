@@ -532,20 +532,9 @@ body {
 }
 
 .marketing-footer-brand {
-  margin: 0 0 0.5rem;
+  margin: 0;
   font-weight: 600;
   color: #fafaf9;
-}
-
-.marketing-footer-note {
-  font-size: 0.8rem;
-  line-height: 1.5;
-  color: #a8a29e;
-}
-
-.marketing-footer-note a {
-  color: #86efac;
-  text-decoration: underline;
 }
 
 /* Connectors */
