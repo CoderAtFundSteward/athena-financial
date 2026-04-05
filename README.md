@@ -23,7 +23,7 @@ Run API and UI together:
 npm run dev
 ```
 
-- Client: [http://localhost:5173](http://localhost:5173)
+- Client: [http://localhost:5173](http://localhost:5173) — multi-page UI (React Router): Overview, Balances, Cash flow, Reports, Settings
 - API: [http://localhost:3001/api/health](http://localhost:3001/api/health)
 
 Or run each side separately: `npm run dev:server` / `npm run dev:client`.
