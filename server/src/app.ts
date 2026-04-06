@@ -4,12 +4,19 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import type { CorsOptions } from 'cors';
+import { quickbooksRouter } from './routes/quickbooks';
 
 function loadLocalEnv() {
   if (process.env.VERCEL) return;
-  const envPath = path.join(process.cwd(), '.env');
-  if (fs.existsSync(envPath)) {
-    dotenv.config({ path: envPath });
+  const candidates = [
+    path.join(process.cwd(), '.env'),
+    path.join(process.cwd(), '..', '.env'),
+  ];
+  for (const envPath of candidates) {
+    if (fs.existsSync(envPath)) {
+      dotenv.config({ path: envPath });
+      break;
+    }
   }
 }
 
@@ -39,6 +46,8 @@ export function createApp() {
   );
 
   app.use(express.json());
+
+  app.use('/api/integrations/quickbooks', quickbooksRouter);
 
   app.get('/api/health', (_req, res) => {
     res.json({

@@ -627,3 +627,65 @@ body {
   margin: 0;
   font-size: 0.75rem;
 }
+
+.connector-dev-user {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  max-width: 48rem;
+}
+
+.connector-inline-msg {
+  margin: 0 0 0.65rem;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .connector-card--qb {
+    grid-column: 1 / -1;
+  }
+}
+
+.qb-connection-list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.qb-connection-row {
+  border: 1px solid rgba(28, 25, 23, 0.1);
+  border-radius: 8px;
+  padding: 0.75rem 0.65rem;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.qb-connection-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.qb-connection-meta strong {
+  color: #0c0a09;
+}
+
+.qb-realm,
+.qb-env {
+  font-size: 0.75rem;
+}
+
+.qb-connection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.qb-account-preview {
+  margin: 0.65rem 0 0;
+  padding-left: 1rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}

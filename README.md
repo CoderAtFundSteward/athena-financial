@@ -37,6 +37,17 @@ After `cp .env.example .env`, your `.env` should use `PORT=3002` and `CLIENT_URL
 | [http://localhost:5280/app/connectors](http://localhost:5280/app/connectors) | Connector catalog — Plaid for **banks/cards**; OAuth/file flows for other sources |
 | [http://localhost:3002/api/public/stats](http://localhost:3002/api/public/stats) | Placeholder JSON for “organizations helped” metrics on the homepage |
 
+### QuickBooks Online (OAuth)
+
+1. Create an app at [developer.intuit.com](https://developer.intuit.com) and add **Redirect URI** exactly matching `QB_REDIRECT_URI` in `.env` (default: `http://localhost:3002/api/integrations/quickbooks/callback`).
+2. Copy `.env.example` → `.env` and set `QUICKBOOKS_CLIENT_ID`, `QUICKBOOKS_CLIENT_SECRET`, `QUICKBOOKS_ENVIRONMENT` (`sandbox` or `production`), and a strong **`ENCRYPTION_KEY`**.
+3. Run `npm run dev`, open **Connectors**, use **Add company** to complete Intuit sign-in.
+4. Each browser gets a **dev user id** (localStorage) until real login exists; each linked QBO company is a **separate connection profile** (multiple per user).
+
+API (all under `/api/integrations/quickbooks/`): `GET /authorize?userId=…`, OAuth callback, `GET /connections?userId=…`, `DELETE /connections/:id?userId=…`, `GET /connections/:id/accounts?userId=…` (sample chart of accounts).
+
+**Note:** Connection data is **in-memory** in this scaffold—restart clears it. Persist with Supabase/Postgres before production.
+
 ### Plaid vs other connectors
 
 **Plaid** is the right integration for **depository and credit accounts at financial institutions**. QuickBooks, Ramp, Tithely, Benevity, Google Sheets, Excel, CSV, and text files are **not** linked through Plaid; they need each vendor’s OAuth/API, Microsoft/Google consent flows, or secure uploads. The UI and copy in the app reflect that split so stakeholders set expectations correctly.
