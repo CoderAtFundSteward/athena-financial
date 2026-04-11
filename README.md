@@ -46,7 +46,7 @@ After `cp .env.example .env`, your `.env` should use `PORT=3002` and `CLIENT_URL
 
 API (all under `/api/integrations/quickbooks/`): `GET /authorize?userId=…`, OAuth callback, `GET /connections?userId=…`, `DELETE /connections/:id?userId=…`, `GET /connections/:id/accounts?userId=…` (sample chart of accounts).
 
-**Note:** Connection data is **in-memory** in this scaffold—restart clears it. Persist with Supabase/Postgres before production.
+**Storage:** With **`SUPABASE_URL`** + **`SUPABASE_SERVICE_ROLE_KEY`** set, connections and OAuth state persist in Postgres (required for **Vercel**, where in-memory storage is not shared across instances). Otherwise the app uses an **in-memory** store (fine for local dev only).
 
 ### Plaid vs other connectors
 
@@ -101,11 +101,26 @@ The local `.vercel/` folder is gitignored; GitHub integration can still trigger 
 - **At rest (data):** When you add **Supabase**, Postgres and file storage are encrypted at rest in Supabase’s cloud; you still define **RLS** and never ship **service role** keys to the client.
 - **Secrets:** Store `SUPABASE_SERVICE_ROLE_KEY`, Plaid secrets, etc. only in **Vercel env** (Production / Preview) or Supabase Edge secrets—never in the repo.
 
-**Supabase (when you need a database)**
+**Supabase (QuickBooks on Vercel)**
 
 1. Create a project at [supabase.com](https://supabase.com/).
-2. Add `SUPABASE_URL` and `SUPABASE_ANON_KEY` for **client-side** usage (with Row Level Security). Use `SUPABASE_SERVICE_ROLE_KEY` only in **server-side** routes (future `server/src` or additional Vercel functions)—see `.env.example` placeholders.
-3. Install `@supabase/supabase-js` where you read/write data and migrate schema with Supabase SQL migrations.
+2. In **SQL → New query**, paste and run [`supabase/migrations/001_quickbooks_oauth.sql`](supabase/migrations/001_quickbooks_oauth.sql).
+3. In Vercel **Environment Variables** (Production, and Preview if you test PRs), set **`SUPABASE_URL`** and **`SUPABASE_SERVICE_ROLE_KEY`** only. Do **not** expose the service role to the browser.
+
+**Share the app publicly (external testers)**
+
+1. Deploy on Vercel and copy the **production** URL, e.g. `https://athena-financial-xxxx.vercel.app`.
+2. **Vercel → Settings → Environment Variables** (at least **Production**):
+   - **`CLIENT_URL`** = `https://athena-financial-xxxx.vercel.app` (no trailing slash)
+   - **`QB_REDIRECT_URI`** = `https://athena-financial-xxxx.vercel.app/api/integrations/quickbooks/callback` (must match **exactly** what you add in the Intuit Developer portal)
+   - **`QUICKBOOKS_CLIENT_ID`**, **`QUICKBOOKS_CLIENT_SECRET`**, **`QUICKBOOKS_ENVIRONMENT`**
+   - **`ENCRYPTION_KEY`** = long random string (same value for every deployment instance)
+   - **`SUPABASE_URL`**, **`SUPABASE_SERVICE_ROLE_KEY`** (after running the migration SQL)
+3. In [developer.intuit.com](https://developer.intuit.com) → your app → **Redirect URIs**, add the same **`QB_REDIRECT_URI`** value.
+4. **Redeploy** the Vercel project so new env vars apply.
+5. Send testers the site URL; they open **Connectors**, use **Add company**, and complete Intuit sign-in (sandbox or production per `QUICKBOOKS_ENVIRONMENT`).
+
+**Preview deployments** get a different `*.vercel.app` hostname unless you use a fixed **branch** domain—either test on **Production** or duplicate the env vars + Intuit redirect for each preview URL you use.
 
 ## GitHub
 

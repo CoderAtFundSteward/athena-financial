@@ -1,6 +1,6 @@
 import OAuthClient from 'intuit-oauth';
 import { decrypt, encrypt } from './crypto';
-import type { QBOConnectionRecord } from './qbo-store';
+import type { QBOConnectionRecord } from './qbo-store-types';
 import { updateConnectionTokens } from './qbo-store';
 
 function makeClient() {
@@ -47,7 +47,7 @@ export async function getValidAccessToken(conn: QBOConnectionRecord): Promise<st
     : conn.refreshTokenEnc;
   const tokenExpiresAt = Date.now() + token.expires_in * 1000;
 
-  updateConnectionTokens(conn.userId, conn.id, {
+  await updateConnectionTokens(conn.userId, conn.id, {
     accessTokenEnc,
     refreshTokenEnc,
     tokenExpiresAt,

@@ -49,7 +49,7 @@ function fullRequestUrl(req: Request): string {
 }
 
 /** Start OAuth: returns Intuit authorization URL (client opens in browser). */
-quickbooksRouter.get('/authorize', (req: Request, res: Response) => {
+quickbooksRouter.get('/authorize', async (req: Request, res: Response) => {
   const userId = typeof req.query.userId === 'string' ? req.query.userId.trim() : '';
   const { clientId, clientSecret } = getOAuthConfig();
   if (!clientId || !clientSecret) {
@@ -64,14 +64,18 @@ quickbooksRouter.get('/authorize', (req: Request, res: Response) => {
     return;
   }
 
-  const state = createPendingOAuthState(userId);
-  const oauthClient = makeOAuthClient();
-  const authUri = oauthClient.authorizeUri({
-    scope: [OAuthClient.scopes.Accounting],
-    state,
-  });
-
-  res.json({ authUri });
+  try {
+    const state = await createPendingOAuthState(userId);
+    const oauthClient = makeOAuthClient();
+    const authUri = oauthClient.authorizeUri({
+      scope: [OAuthClient.scopes.Accounting],
+      state,
+    });
+    res.json({ authUri });
+  } catch (e) {
+    console.error('QBO authorize error:', e);
+    res.status(500).json({ error: 'Failed to start OAuth state' });
+  }
 });
 
 /** Intuit redirects here after user approves. */
@@ -82,7 +86,7 @@ quickbooksRouter.get('/callback', async (req: Request, res: Response) => {
   };
 
   try {
-    const userId = consumePendingOAuthState(req.query.state as string | undefined);
+    const userId = await consumePendingOAuthState(req.query.state as string | undefined);
     if (!userId) {
       redirectError('invalid_oauth_state');
       return;
@@ -110,7 +114,7 @@ quickbooksRouter.get('/callback', async (req: Request, res: Response) => {
       companyName = null;
     }
 
-    upsertConnection({
+    await upsertConnection({
       userId,
       realmId,
       companyName,
@@ -129,22 +133,27 @@ quickbooksRouter.get('/callback', async (req: Request, res: Response) => {
 });
 
 /** List connection profiles for a user (no secrets). */
-quickbooksRouter.get('/connections', (req: Request, res: Response) => {
+quickbooksRouter.get('/connections', async (req: Request, res: Response) => {
   const userId = typeof req.query.userId === 'string' ? req.query.userId.trim() : '';
   if (!userId) {
     res.status(400).json({ error: 'userId query parameter is required' });
     return;
   }
-  const rows = listConnectionsForUser(userId);
-  res.json({
-    connections: rows.map((c) => ({
-      id: c.id,
-      realmId: c.realmId,
-      companyName: c.companyName,
-      environment: c.environment,
-      createdAt: c.createdAt,
-    })),
-  });
+  try {
+    const rows = await listConnectionsForUser(userId);
+    res.json({
+      connections: rows.map((c) => ({
+        id: c.id,
+        realmId: c.realmId,
+        companyName: c.companyName,
+        environment: c.environment,
+        createdAt: c.createdAt,
+      })),
+    });
+  } catch (e) {
+    console.error('QBO list connections error:', e);
+    res.status(500).json({ error: 'Failed to list connections' });
+  }
 });
 
 /** Sample read: chart of accounts (validates token + realm). */
@@ -154,7 +163,7 @@ quickbooksRouter.get('/connections/:id/accounts', async (req: Request, res: Resp
     res.status(400).json({ error: 'userId query parameter is required' });
     return;
   }
-  const conn = getConnection(userId, routeParamId(req.params.id));
+  const conn = await getConnection(userId, routeParamId(req.params.id));
   if (!conn) {
     res.status(404).json({ error: 'Connection not found' });
     return;
@@ -172,7 +181,7 @@ quickbooksRouter.get('/connections/:id/accounts', async (req: Request, res: Resp
 });
 
 /** Remove one connection profile. */
-quickbooksRouter.delete('/connections/:id', (req: Request, res: Response) => {
+quickbooksRouter.delete('/connections/:id', async (req: Request, res: Response) => {
   const userId =
     (typeof req.query.userId === 'string' && req.query.userId.trim()) ||
     (typeof req.body?.userId === 'string' && req.body.userId.trim()) ||
@@ -181,10 +190,15 @@ quickbooksRouter.delete('/connections/:id', (req: Request, res: Response) => {
     res.status(400).json({ error: 'userId is required (query or JSON body)' });
     return;
   }
-  const ok = deleteConnection(userId, routeParamId(req.params.id));
-  if (!ok) {
-    res.status(404).json({ error: 'Connection not found' });
-    return;
+  try {
+    const ok = await deleteConnection(userId, routeParamId(req.params.id));
+    if (!ok) {
+      res.status(404).json({ error: 'Connection not found' });
+      return;
+    }
+    res.json({ deleted: true });
+  } catch (e) {
+    console.error('QBO delete connection error:', e);
+    res.status(500).json({ error: 'Failed to delete connection' });
   }
-  res.json({ deleted: true });
 });

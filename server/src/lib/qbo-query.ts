@@ -1,4 +1,4 @@
-import type { QBOConnectionRecord } from './qbo-store';
+import type { QBOConnectionRecord } from './qbo-store-types';
 import { getValidAccessToken } from './qbo-token';
 
 const MINOR_VERSION = '73';

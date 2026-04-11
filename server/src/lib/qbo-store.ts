@@ -1,8 +1,28 @@
-import crypto from 'crypto';
+export type { QBOConnectionRecord } from './qbo-store-types';
+import type { QBOConnectionRecord } from './qbo-store-types';
+import * as memory from './qbo-store-memory';
+import * as supa from './qbo-store-supabase';
 
-/** One linked QuickBooks Online company per row; a user may have many. */
-export type QBOConnectionRecord = {
-  id: string;
+/** When set, QuickBooks OAuth state and tokens persist across Vercel serverless instances. */
+export function useSupabaseStore(): boolean {
+  return !!(
+    process.env.SUPABASE_URL?.trim() && process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()
+  );
+}
+
+export async function createPendingOAuthState(userId: string): Promise<string> {
+  return useSupabaseStore()
+    ? supa.createPendingOAuthState(userId)
+    : Promise.resolve(memory.createPendingOAuthState(userId));
+}
+
+export async function consumePendingOAuthState(state: string | undefined): Promise<string | null> {
+  return useSupabaseStore()
+    ? supa.consumePendingOAuthState(state)
+    : Promise.resolve(memory.consumePendingOAuthState(state));
+}
+
+export async function upsertConnection(input: {
   userId: string;
   realmId: string;
   companyName: string | null;
@@ -10,91 +30,37 @@ export type QBOConnectionRecord = {
   refreshTokenEnc: string;
   tokenExpiresAt: number;
   environment: string;
-  createdAt: string;
-};
-
-type PendingOAuth = { userId: string; expires: number };
-
-const connections: QBOConnectionRecord[] = [];
-const pendingOAuth = new Map<string, PendingOAuth>();
-
-const PENDING_TTL_MS = 15 * 60 * 1000;
-
-export function createPendingOAuthState(userId: string): string {
-  const state = crypto.randomUUID();
-  pendingOAuth.set(state, { userId, expires: Date.now() + PENDING_TTL_MS });
-  return state;
+}): Promise<QBOConnectionRecord> {
+  return useSupabaseStore() ? supa.upsertConnection(input) : Promise.resolve(memory.upsertConnection(input));
 }
 
-export function consumePendingOAuthState(state: string | undefined): string | null {
-  if (!state) return null;
-  const p = pendingOAuth.get(state);
-  pendingOAuth.delete(state);
-  if (!p || p.expires < Date.now()) return null;
-  return p.userId;
+export async function listConnectionsForUser(userId: string): Promise<QBOConnectionRecord[]> {
+  return useSupabaseStore()
+    ? supa.listConnectionsForUser(userId)
+    : Promise.resolve(memory.listConnectionsForUser(userId));
 }
 
-export function upsertConnection(input: {
-  userId: string;
-  realmId: string;
-  companyName: string | null;
-  accessTokenEnc: string;
-  refreshTokenEnc: string;
-  tokenExpiresAt: number;
-  environment: string;
-}): QBOConnectionRecord {
-  const idx = connections.findIndex((c) => c.userId === input.userId && c.realmId === input.realmId);
-  const now = new Date().toISOString();
-  if (idx >= 0) {
-    const prev = connections[idx]!;
-    const updated: QBOConnectionRecord = {
-      ...prev,
-      companyName: input.companyName ?? prev.companyName,
-      accessTokenEnc: input.accessTokenEnc,
-      refreshTokenEnc: input.refreshTokenEnc,
-      tokenExpiresAt: input.tokenExpiresAt,
-      environment: input.environment,
-    };
-    connections[idx] = updated;
-    return updated;
-  }
-  const row: QBOConnectionRecord = {
-    id: crypto.randomUUID(),
-    userId: input.userId,
-    realmId: input.realmId,
-    companyName: input.companyName,
-    accessTokenEnc: input.accessTokenEnc,
-    refreshTokenEnc: input.refreshTokenEnc,
-    tokenExpiresAt: input.tokenExpiresAt,
-    environment: input.environment,
-    createdAt: now,
-  };
-  connections.push(row);
-  return row;
+export async function deleteConnection(userId: string, connectionId: string): Promise<boolean> {
+  return useSupabaseStore()
+    ? supa.deleteConnection(userId, connectionId)
+    : Promise.resolve(memory.deleteConnection(userId, connectionId));
 }
 
-export function listConnectionsForUser(userId: string): QBOConnectionRecord[] {
-  return connections.filter((c) => c.userId === userId);
+export async function getConnection(
+  userId: string,
+  connectionId: string,
+): Promise<QBOConnectionRecord | undefined> {
+  return useSupabaseStore()
+    ? supa.getConnection(userId, connectionId)
+    : Promise.resolve(memory.getConnection(userId, connectionId));
 }
 
-export function deleteConnection(userId: string, connectionId: string): boolean {
-  const i = connections.findIndex((c) => c.id === connectionId && c.userId === userId);
-  if (i < 0) return false;
-  connections.splice(i, 1);
-  return true;
-}
-
-export function getConnection(userId: string, connectionId: string): QBOConnectionRecord | undefined {
-  return connections.find((c) => c.id === connectionId && c.userId === userId);
-}
-
-export function updateConnectionTokens(
+export async function updateConnectionTokens(
   userId: string,
   connectionId: string,
   patch: Partial<Pick<QBOConnectionRecord, 'accessTokenEnc' | 'refreshTokenEnc' | 'tokenExpiresAt'>>,
-): boolean {
-  const c = getConnection(userId, connectionId);
-  if (!c) return false;
-  Object.assign(c, patch);
-  return true;
+): Promise<boolean> {
+  return useSupabaseStore()
+    ? supa.updateConnectionTokens(userId, connectionId, patch)
+    : Promise.resolve(memory.updateConnectionTokens(userId, connectionId, patch));
 }
